@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 
 const rootDir = fs.realpathSync(process.cwd());
-const srcDir = path.resolve(rootDir, './');
+const srcDir = path.resolve(rootDir, './src');
 const buildDir = path.resolve(rootDir, 'build');
 
 
@@ -18,6 +18,11 @@ const common = {
   ],
   module: {
     rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: { loader: 'babel-loader' }
+      },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -57,7 +62,7 @@ const common = {
     ],
   },
   resolve: {
-    modules: ['node_modules', srcDir],
+    modules: ['node_modules', rootDir],
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
   },
 };
@@ -67,14 +72,13 @@ const clientConfig = {
   target: 'web',
   name: 'client',
   entry: {
-    client: path.resolve(srcDir, './client/index.tsx'),
+    client: path.resolve(rootDir, './src/index.tsx'),
   },
   output: {
     publicPath: '/',
     path: buildDir,
     filename: 'client.js',
   },
-
   // optimization: {
   //   splitChunks: {
   //     cacheGroups: {
@@ -95,7 +99,7 @@ const serverConfig = {
   target: 'node',
   name: 'server',
   entry: {
-    server: path.resolve(srcDir, './server/server.ts'),
+    server: path.resolve(rootDir, './server/server.js'),
   },
   output: {
     publicPath: '/',
