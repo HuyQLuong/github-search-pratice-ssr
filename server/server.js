@@ -1,7 +1,11 @@
 import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
-import App from 'client/components/App';
+import App from 'src/route/App';
+import { StaticRouter } from "react-router-dom/server";
+
+
+
 
 const port = 3000;
 const server = express();
@@ -9,9 +13,13 @@ const server = express();
 server.use(express.static('build'));
 
 server.get('/', (req, res) => {
-  const body = renderToString(React.createElement(App));
+  const body = renderToString(
+    <StaticRouter location={req.url}>
+      <App />
+    </StaticRouter>
+  );
 
-  const html = ({ body }: { body: string }) => `
+  const html = ({ body }) => `
     <!DOCTYPE html>
     <html>
       <head>
@@ -20,10 +28,9 @@ server.get('/', (req, res) => {
         <div id="app">${body}</div>
       </body>
       <script src="/client.js" defer></script>
-      <link rel="stylesheet" type="text/css" href="./styles.css" />
-
     </html>
   `;
+
 
   res.send(
     html({
@@ -31,5 +38,7 @@ server.get('/', (req, res) => {
     })
   );
 })
+
+
 
 server.listen(port, () => console.log('Example app listening on port 3000!'));
