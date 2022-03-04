@@ -3,6 +3,7 @@ import express from 'express';
 import { renderToString } from 'react-dom/server';
 import App from 'src/route/App';
 import { StaticRouter } from "react-router-dom/server";
+import { ServerStyleSheet } from 'styled-components';
 
 
 
@@ -13,16 +14,19 @@ const server = express();
 server.use(express.static('build'));
 
 server.get('/', (req, res) => {
-  const body = renderToString(
+  const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
+  const body = renderToString(sheet.collectStyles(
     <StaticRouter location={req.url}>
       <App />
     </StaticRouter>
+  )
   );
-
-  const html = ({ body }) => `
+  const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
+  const html = ({ body, styles }) => `
     <!DOCTYPE html>
     <html>
       <head>
+        ${styles}
       </head>
       <body style="margin:0">
         <div id="app">${body}</div>
@@ -34,7 +38,8 @@ server.get('/', (req, res) => {
 
   res.send(
     html({
-      body
+      body,
+      styles
     })
   );
 })
