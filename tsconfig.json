@@ -19,9 +19,9 @@
       "src":[
         "src/*"
       ],
-      "server/*": [
+      "server": [
         "server/*"
-      ]
+      ],
     },
   },
   "include": [

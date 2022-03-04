@@ -63,7 +63,8 @@ const common = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      src: path.resolve(rootDir, './src')
+      src: path.resolve(rootDir, './src'),
+      public: path.resolve(rootDir, './public')
     }
   },
 };

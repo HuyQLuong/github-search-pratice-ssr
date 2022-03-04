@@ -11,11 +11,13 @@ const GlobalStyles = createGlobalStyle`
     background: ${({ theme } )  => theme?.body ? theme.body : lightTheme.body} ;
     color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
     transition: background 0.2s ease-in, color 0.2s ease-in;
+
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
 `
 
 export const lightTheme = {

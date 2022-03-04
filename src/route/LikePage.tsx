@@ -8,4 +8,3 @@ function LikePage() {
 }
 
 export default LikePage;
-;
