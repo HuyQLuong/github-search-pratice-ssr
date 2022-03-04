@@ -1,12 +1,9 @@
 import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 import App from 'src/route/App';
 import { StaticRouter } from "react-router-dom/server";
-import { ServerStyleSheet } from 'styled-components';
-
-
-
 
 const port = 3000;
 const server = express();
@@ -17,10 +14,10 @@ server.get('/', (req, res) => {
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
   const body = renderToString(sheet.collectStyles(
     <StaticRouter location={req.url}>
-      <App />
+        <App/>
     </StaticRouter>
-  )
-  );
+  ));
+
   const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
   const html = ({ body, styles }) => `
     <!DOCTYPE html>
@@ -29,13 +26,11 @@ server.get('/', (req, res) => {
         ${styles}
       </head>
       <body style="margin:0">
-        <div id="app">${body}</div>
+        <div id="root">${body}</div>
       </body>
       <script src="/client.js" defer></script>
     </html>
   `;
-
-
   res.send(
     html({
       body,

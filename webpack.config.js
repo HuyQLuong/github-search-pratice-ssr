@@ -6,7 +6,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 
 const rootDir = fs.realpathSync(process.cwd());
-const srcDir = path.resolve(rootDir, './src');
 const buildDir = path.resolve(rootDir, 'build');
 
 
@@ -26,12 +25,9 @@ const common = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        include: srcDir,
+        include: rootDir,
         use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-          },
+          loader: 'ts-loader',
         },
       },
       {
@@ -39,7 +35,10 @@ const common = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: 'ts-loader',
+            options: {
+              configFile: "tsconfig.json",
+            },
           }
         ]
       },
@@ -62,8 +61,10 @@ const common = {
     ],
   },
   resolve: {
-    modules: ['node_modules', rootDir],
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    alias: {
+      src: path.resolve(rootDir, './src')
+    }
   },
 };
 
@@ -79,18 +80,6 @@ const clientConfig = {
     path: buildDir,
     filename: 'client.js',
   },
-  // optimization: {
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       vendor: {
-  //         chunks: 'initial',
-  //         name: 'vendor',
-  //         test: module => /node_modules/.test(module.resource),
-  //         enforce: true,
-  //       },
-  //     },
-  //   },
-  // },
   devtool: 'eval-source-map',
 };
 
@@ -106,11 +95,12 @@ const serverConfig = {
     path: buildDir,
     filename: 'server.js',
   },
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   externals: [webpackNodeExternals()],
   node: {
     __dirname: false,
   },
+  
 };
 
 module.exports = [clientConfig, serverConfig];
