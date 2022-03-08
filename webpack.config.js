@@ -31,18 +31,6 @@ const common = {
         },
       },
       {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              configFile: "tsconfig.json",
-            },
-          }
-        ]
-      },
-      {
         test: /\.svg$/,
         exclude: /node_modules/,
         use: [
