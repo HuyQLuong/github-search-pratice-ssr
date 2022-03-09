@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components'
-import { Label } from 'src/uiLabel';
+import { LABEL } from 'src/uiLabel';
 
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ function SearchBar () {
     return (
         <SearchBarWrapper>
             <InputBarStyled
-                placeholder={Label.SEARCH_BAR_PLACEHOLDER}
+                placeholder={LABEL.SEARCH_BAR_PLACEHOLDER}
                 onChange={handleTyping}
             ></InputBarStyled>
         </SearchBarWrapper>

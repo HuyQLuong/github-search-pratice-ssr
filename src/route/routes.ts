@@ -6,7 +6,6 @@ export const ROUTES = [
       element: 'SearchPage'
     },
     {
-     
       exact: true,
       path: '/user',
       title: 'User',
@@ -14,7 +13,14 @@ export const ROUTES = [
     },
     {
         exact: true,
-        path: '/like',
-        title: 'LikePage',
+        path: '/liked',
+        title: 'Favorite',
+        element: 'LikePage'
     }
 ];
+
+export const MAP_ROUTE_TO_TITLE = {
+  'search': 'Search',
+  'liked': 'Favorite',
+  'user':  'User',
+}
