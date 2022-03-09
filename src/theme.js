@@ -9,24 +9,30 @@ const GlobalStyles = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: ${({ theme } )  => theme?.body ? theme.body : lightTheme.body} ;
-    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.text};
     transition: background 0.2s ease-in, color 0.2s ease-in;
-
+    fill:  ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
+  }
+  svg {
+    fill:  ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
+  }
+  span {
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
   }
 
 `
 
 export const lightTheme = {
   body: '#f1f1f1',
-  text: '#121620'
+  text: '#121620',
 };
 export const darkTheme = {
   body: '#121620',
-  text: '#f1f1f1'
+  text: '#f1f1f1',
 };
 
 export default GlobalStyles;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 const Label = styled.label`
   display: flex;
@@ -42,10 +42,15 @@ const Input = styled.input`
   }
 `;
 
-function ToggleButton({toggleTheme} : {
+function ToggleButton({toggleTheme, isChecked} : {
   toggleTheme: Function;
+  isChecked: boolean;
 }) {
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setChecked(isChecked);
+  }, [isChecked])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
