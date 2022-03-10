@@ -4,7 +4,8 @@ import { LABEL } from 'src/uiLabel';
 
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
-import { addUser } from 'src/action/action';
+import { getUsersAction } from 'src/action/action';
+import { debounce as lDebounce } from 'lodash'
 
 const SearchBarWrapper = styled.div`
     display: flex;
@@ -20,12 +21,20 @@ const InputBarStyled = styled.input`
 function SearchBar () {
     const dispatch: Dispatch<any> = useDispatch();
 
-    const handleTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(addUser({
-            id: 1,
-            title: 'hello',
-            body: 'nice'
-        }))
+    const debouncedSearch = React.useRef(
+        lDebounce(async (event) => {
+            if (event.target.value){
+                dispatch(getUsersAction(
+                    { query: event.target.value}
+                ))
+            } else {
+                // TODO: clear user
+            }
+        }, 500)
+      ).current;
+
+    async function handleTyping (event: React.ChangeEvent<HTMLInputElement>)   {
+        debouncedSearch(event);
     }
 
     return (

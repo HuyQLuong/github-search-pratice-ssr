@@ -24,15 +24,28 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
   }
 
+  li a {
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
+    background: ${({ theme } )  => theme?.body ? theme.body : lightTheme.body};
+    box-shadow: 1px 2px 5px ${({ theme } )  => theme?.body ? theme.body : lightTheme.body};
+  }
+
+  .user-card {
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.05);
+    background: ${({ theme } )  => theme?.background ? theme.background : lightTheme.background};
+  }
+
 `
 
 export const lightTheme = {
   body: '#f1f1f1',
   text: '#121620',
+  background: '#ffffff'
 };
 export const darkTheme = {
   body: '#121620',
   text: '#f1f1f1',
+  background: '#000000'
 };
 
 export default GlobalStyles;

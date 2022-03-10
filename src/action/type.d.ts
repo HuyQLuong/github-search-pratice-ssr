@@ -1,16 +1,28 @@
 interface IUsers {
-    id: number
-    title: string
+    avatar_url: string,
+    login: string
     body: string
   }
   
   type UsersState = {
     users: IUsers[]
+    total: number
   }
   
   type UsersAction = {
-    type: string
-    users: IUsers
+    type: string,
+    data: {},
   }
   
   type DispatchType = (args: UsersAction) => UsersAction
+
+  type LikesState = {
+    users: IUsers[]
+  }
+  
+  type LikesAction = {
+    type: string,
+    data: {},
+  }
+  
+  type DispatchType = (args: LikesAction) => LikesAction

@@ -1,7 +1,9 @@
-// import * as actionTypes from "src/store/actionTypes";
+import * as actionTypes from "src/reducer/actionTypes";
+import { cloneDeep as lCloneDeep} from 'lodash';
 
 const initialState: UsersState = {
     users: [],
+    total: 0,
   }
 
 function reducer (
@@ -9,15 +11,24 @@ function reducer (
     _action: UsersAction
   ): UsersState {
     switch (_action.type) {
-      case 'GET_USER':
-        const newArticle: IUsers = {
-          id: Math.random(), // not really unique
-          title: _action.users.title,
-          body: _action.users.body,
+      case actionTypes.ADD_USER_INFO:
+        const newState: UsersState = lCloneDeep(_state);
+        let userIndex = newState.users.findIndex(user => user.login === _action.data['userInfo']['login']);
+        if (userIndex > -1) {
+          newState.users[userIndex] = {
+            ...newState.users[userIndex],
+            ..._action.data['userInfo']
+          }
         }
         return {
           ..._state,
-          users: _state.users.concat(newArticle),
+          users: newState.users,
+        }
+      case actionTypes.ADD_USERS:
+        return {
+          ..._state,
+          users: _action.data['userList'],
+          total: _action.data['totalUser'],
         }
       default:
         return _state
