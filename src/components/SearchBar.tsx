@@ -18,14 +18,19 @@ const InputBarStyled = styled.input`
 `
 
 
-function SearchBar () {
+function SearchBar ({
+    setSearchTerm
+}: {
+    setSearchTerm: Function
+}) {
     const dispatch: Dispatch<any> = useDispatch();
 
     const debouncedSearch = React.useRef(
         lDebounce(async (event) => {
             if (event.target.value){
+                setSearchTerm(event.target.value);
                 dispatch(getUsersAction(
-                    { query: event.target.value}
+                    { query: event.target.value, page: 1}
                 ))
             } else {
                 // TODO: clear user

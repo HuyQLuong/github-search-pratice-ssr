@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Heart as HeartIcon } from '@styled-icons/boxicons-solid/Heart';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Dispatch } from "redux";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getUserInfoAction } from 'src/action/action';
 import LikeButton from 'src/components/LikeButton';
 
@@ -10,9 +9,13 @@ const CardWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    padding: 1rem;
+    padding: 0.25rem;
     margin: 0.25rem;
-    width: 30%;
+    width: 40%;
+    @media (min-width: 1000px) {
+        width: 30%;
+        padding: 1rem;
+    }
     border-radius: 5px;
 `
 
@@ -28,37 +31,26 @@ const Avatar = styled.div<{ url: string }>`
 const UserInfo = styled.div`
     height: 100%;
     width: 60%;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
+    @media (min-width: 1000px) {
+      font-size: 0.7rem;
+    }
 `
 
 const Username = styled.div`
     font-weight: 700;
-    font-size: 0.7rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 `
-
-
-const HeartIconStyled = styled(HeartIcon)`
-    width: 0.8rem;
-    height: 0.8rem;
-    stroke: #F44336;
-    stroke-width: 2;
-    fill: none;
-    cursor: pointer;
-    ${({ active }: {active: Boolean}) => active && `
-        fill: #F44336;
-        stroke-width: 0;
-    `}
-`
-
 
 function UserCard ({
   item,
+  likeDisable,
 } : {
   item: { login: string, avatar_url: string }
+  likeDisable: boolean
 }) {
     const dispatch: Dispatch<any> = useDispatch();
     useEffect(() => {
@@ -81,7 +73,7 @@ function UserCard ({
                 Object.keys(item).includes('following') && <div>{item['following']} followings</div>
             }
       </UserInfo>  
-      <LikeButton item={item}></LikeButton>
+      <LikeButton item={item} likeDisable={likeDisable} ></LikeButton>
     </CardWrapper>
   );
 }

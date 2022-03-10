@@ -13,15 +13,17 @@ const PageWrapper = styled.div`
 
 function UserPage ({
   currentItems,
+  likeDisable,
 } : {
   currentItems: IUsers[],
+  likeDisable: boolean,
 }) {
   return (
     <PageWrapper>
       {
         currentItems.map((item: { login: string, avatar_url: string}) => {
             return (
-              <UserCard key={item.login} item={item}></UserCard>
+              <UserCard key={item.login} item={item} likeDisable={likeDisable} ></UserCard>
             )
         })
       }

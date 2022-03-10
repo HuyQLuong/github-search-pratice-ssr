@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import Users from 'src/reducer/user'
+import users from 'src/reducer/user'
+import likes from 'src/reducer/like'
 
 export default combineReducers({ 
-    Users: Users
+    users,
+    likes,
 });

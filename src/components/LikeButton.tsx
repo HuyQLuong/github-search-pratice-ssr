@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Heart as HeartIcon } from '@styled-icons/boxicons-solid/Heart';
 import styled from 'styled-components';
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Dispatch } from "redux";
-import { useDispatch, useSelector } from "react-redux";
-
+import { likeUserAction, unLikeUserAction } from 'src/action/action';
 
 const HeartIconStyled = styled(HeartIcon)`
     width: 0.8rem;
@@ -16,18 +16,40 @@ const HeartIconStyled = styled(HeartIcon)`
         fill: #F44336;
         stroke-width: 0;
     `}
+    position: relative;
+    right: 0;
 `
 
 
 function LikeButton ({
   item,
+  likeDisable
 } : {
   item: { login: string, avatar_url: string }
+  likeDisable : boolean
 }) {
+   const dispatch: Dispatch<any> = useDispatch();
+   const likedUsersState: IUsers[] = useSelector((state: any) => state.likes.users, shallowEqual);
 
-   const [isLike, setIsLike] = useState(false)
+
+   const [isLike, setIsLike] = useState(likeDisable)
+
+    useEffect(() => {
+        debugger;
+        const isLikedUser = !!likedUsersState.find(likedUser => likedUser.login === item.login)
+        if (isLikedUser){
+            setIsLike(true);
+        }
+    },[item, likedUsersState])
+
    const handleClick = () => {
+       if (likeDisable) return;
         setIsLike(!isLike)
+        if (!isLike){
+            dispatch(likeUserAction({user: item}))
+        } else {
+            dispatch(unLikeUserAction({user: item}))
+        }
    }
 
   return (

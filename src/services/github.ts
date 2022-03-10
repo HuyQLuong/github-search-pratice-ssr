@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export const getUsersService = async ({query} : {query: string}) => {
+export const getUsersService = async ({query, page} : {query: string, page: number}) => {
     try {
         const response = await axios.get(
-        `https://api.github.com/search/users?q=${query}`,
+        `https://api.github.com/search/users?q=${query}&page=${page}&per_page=12`,
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 

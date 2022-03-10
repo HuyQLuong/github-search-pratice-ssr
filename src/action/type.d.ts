@@ -1,12 +1,12 @@
 interface IUsers {
     avatar_url: string,
     login: string
-    body: string
   }
   
   type UsersState = {
     users: IUsers[]
     total: number
+    page: number
   }
   
   type UsersAction = {
@@ -14,8 +14,6 @@ interface IUsers {
     data: {},
   }
   
-  type DispatchType = (args: UsersAction) => UsersAction
-
   type LikesState = {
     users: IUsers[]
   }
@@ -24,5 +22,6 @@ interface IUsers {
     type: string,
     data: {},
   }
-  
-  type DispatchType = (args: LikesAction) => LikesAction
+
+  type UserDispatchType = (args: UsersAction) => UsersAction
+  type LikeDispatchType = (args: LikesAction) => LikesAction

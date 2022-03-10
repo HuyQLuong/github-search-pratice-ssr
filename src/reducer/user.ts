@@ -4,6 +4,7 @@ import { cloneDeep as lCloneDeep} from 'lodash';
 const initialState: UsersState = {
     users: [],
     total: 0,
+    page: 0,
   }
 
 function reducer (
@@ -29,6 +30,7 @@ function reducer (
           ..._state,
           users: _action.data['userList'],
           total: _action.data['totalUser'],
+          page: _action.data['page']
         }
       default:
         return _state

@@ -1,8 +1,12 @@
 import {createGlobalStyle } from 'styled-components'
 const GlobalStyles = createGlobalStyle`
   body {
-    margin: 0.5rem;
-    padding: 1rem;
+    margin: 0.25rem;
+    padding: 0.25rem;
+    @media (min-width: 1000px) {
+      margin: 0.5rem;
+      padding: 1rem;
+    }
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
       'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
       sans-serif;

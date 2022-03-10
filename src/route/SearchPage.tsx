@@ -13,20 +13,23 @@ const PageWrapper = styled.div`
 
 function SearchPage() {
 
-  const usersState = useSelector((state: any) => state.Users, shallowEqual);
+  const usersState = useSelector((state: any) => state.users, shallowEqual);
 
   const [ userList, setUserList ] = useState([])
+  const [ totalUsers, setTotalUser ] = useState(0);
+  const [ searchTerm, setSearchTerm ] = useState('');
 
   useEffect(() => {
     setUserList(usersState.users)
+    setTotalUser(usersState.total)
   }, [usersState.total, usersState.users])
 
   return (
       <PageWrapper>
-        <SearchBar></SearchBar>
+        <SearchBar setSearchTerm={setSearchTerm}></SearchBar>
         {
           userList && userList.length ?
-          <UserPage users={userList}></UserPage>
+          <UserPage users={userList} totalUsers={totalUsers} searchTerm={searchTerm}></UserPage>
           : <BlankScreen page={MAP_ROUTE_TO_TITLE.search}></BlankScreen>
         }
       </PageWrapper>

@@ -2,12 +2,13 @@ import * as actionTypes from "src/reducer/actionTypes"
 import { getUsersService, getUserInfoService } from "src/services/github"
 
 
-function addUsers({userList, totalUser} : {userList: [], totalUser: number}) {
+function addUsers({userList, totalUser, page} : {userList: [], totalUser: number, page: number}) {
     const action: UsersAction = {
       type: actionTypes.ADD_USERS,
       data: {
           userList,
           totalUser,
+          page,
         }
     }
     return action;
@@ -23,12 +24,32 @@ function addUserInfo({userInfo} : { userInfo : {}}) {
     return action;
 }
 
-export const getUsersAction = ({query} :{query: string}) => async (dispatch: UserDispatchType) => {
-    const response: any = await getUsersService({query});
+function likeUser({user} : { user : IUsers}) {
+    const action: LikesAction = {
+      type: actionTypes.ADD_LIKED_USER,
+      data: {
+            user,
+        }
+    }
+    return action;
+}
+
+function unLikeUser({user} : { user : IUsers}) {
+    const action: LikesAction = {
+      type: actionTypes.UNLIKED_USER,
+      data: {
+            user,
+        }
+    }
+    return action;
+}
+
+export const getUsersAction = ({query, page} :{query: string, page: number}) => async (dispatch: UserDispatchType) => {
+    const response: any = await getUsersService({query, page});
     const userList: [] = response.items;
     const totalUser = response.total_count;
     if (userList && userList.length > 0) {
-        dispatch(addUsers({userList, totalUser}));
+        dispatch(addUsers({userList, totalUser, page}));
     }
 };
 
@@ -39,9 +60,11 @@ export const getUserInfoAction = ({username} :{username: string}) => async (disp
     }
 };
 
-// export const likeUserAction = ({user} :{user: IUsers}) => async (dispatch: LikeDispatchType) => {
+export const likeUserAction = ({user} :{user: IUsers}) => async (dispatch: LikeDispatchType) => {
+    dispatch(likeUser({user}));
+};
 
-//         dispatch(addUserInfo({userInfo: response}));
-//     }
-// };
+export const unLikeUserAction = ({user} :{user: IUsers}) => async (dispatch: LikeDispatchType) => {
+    dispatch(unLikeUser({user}));
+};
 
