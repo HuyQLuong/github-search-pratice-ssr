@@ -18,11 +18,16 @@ function SearchPage() {
   const [ userList, setUserList ] = useState([])
   const [ totalUsers, setTotalUser ] = useState(0);
   const [ searchTerm, setSearchTerm ] = useState('');
+  
 
   useEffect(() => {
     setUserList(usersState.users)
     setTotalUser(usersState.total)
   }, [usersState.total, usersState.users])
+
+  useEffect(() => {
+    setSearchTerm(usersState.query)
+  }, [usersState.query])
 
   return (
       <PageWrapper>

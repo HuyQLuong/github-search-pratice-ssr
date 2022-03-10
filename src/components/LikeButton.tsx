@@ -35,7 +35,6 @@ function LikeButton ({
    const [isLike, setIsLike] = useState(likeDisable)
 
     useEffect(() => {
-        debugger;
         const isLikedUser = !!likedUsersState.find(likedUser => likedUser.login === item.login)
         if (isLikedUser){
             setIsLike(true);

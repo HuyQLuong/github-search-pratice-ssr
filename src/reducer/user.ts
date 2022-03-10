@@ -5,6 +5,7 @@ const initialState: UsersState = {
     users: [],
     total: 0,
     page: 0,
+    query: '',
   }
 
 function reducer (
@@ -30,7 +31,8 @@ function reducer (
           ..._state,
           users: _action.data['userList'],
           total: _action.data['totalUser'],
-          page: _action.data['page']
+          page: _action.data['page'],
+          query: _action.data['query']
         }
       default:
         return _state

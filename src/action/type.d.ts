@@ -7,6 +7,7 @@ interface IUsers {
     users: IUsers[]
     total: number
     page: number
+    query: string
   }
   
   type UsersAction = {

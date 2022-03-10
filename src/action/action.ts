@@ -2,13 +2,14 @@ import * as actionTypes from "src/reducer/actionTypes"
 import { getUsersService, getUserInfoService } from "src/services/github"
 
 
-function addUsers({userList, totalUser, page} : {userList: [], totalUser: number, page: number}) {
+function addUsers({userList, totalUser, page, query} : {userList: [], totalUser: number, page: number, query: string}) {
     const action: UsersAction = {
       type: actionTypes.ADD_USERS,
       data: {
           userList,
           totalUser,
           page,
+          query,
         }
     }
     return action;
@@ -49,7 +50,7 @@ export const getUsersAction = ({query, page} :{query: string, page: number}) => 
     const userList: [] = response.items;
     const totalUser = response.total_count;
     if (userList && userList.length > 0) {
-        dispatch(addUsers({userList, totalUser, page}));
+        dispatch(addUsers({userList, totalUser, page, query}));
     }
 };
 

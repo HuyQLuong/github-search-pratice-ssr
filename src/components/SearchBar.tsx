@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { LABEL } from 'src/uiLabel';
 
 import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { getUsersAction } from 'src/action/action';
 import { debounce as lDebounce } from 'lodash'
 
@@ -19,16 +19,22 @@ const InputBarStyled = styled.input`
 
 
 function SearchBar ({
-    setSearchTerm
+    setSearchTerm,
 }: {
-    setSearchTerm: Function
+    setSearchTerm: Function,
 }) {
     const dispatch: Dispatch<any> = useDispatch();
+    const searchTerm: string = useSelector((state: any) => state.users.query, shallowEqual);
+    const [queryTerm, setQueryTerm] = useState('')
+
+    useEffect(() => {
+        setQueryTerm(searchTerm);
+    }, [searchTerm])
 
     const debouncedSearch = React.useRef(
         lDebounce(async (event) => {
             if (event.target.value){
-                setSearchTerm(event.target.value);
+                setQueryTerm(event.target.value);
                 dispatch(getUsersAction(
                     { query: event.target.value, page: 1}
                 ))
@@ -45,8 +51,11 @@ function SearchBar ({
     return (
         <SearchBarWrapper>
             <InputBarStyled
+                name="search"
+                type="text"
                 placeholder={LABEL.SEARCH_BAR_PLACEHOLDER}
                 onChange={handleTyping}
+                defaultValue={queryTerm}
             ></InputBarStyled>
         </SearchBarWrapper>
     )
