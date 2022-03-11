@@ -8,31 +8,45 @@ import { createStore, applyMiddleware } from "redux"
 import { Provider } from "react-redux"
 import thunk from "redux-thunk"
 import { composeWithDevTools } from "redux-devtools-extension";
-import { get as lGet } from 'lodash';
 import reportWebVitals from 'src/reportWebVitals';
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
+
+const persistConfig = {
+  key: 'root',
+  storage,
+  blacklist: ['users']
+}
+
+
+const persistRootReducer = persistReducer(persistConfig, reducer);
 
 const root = document.getElementById("root")
 let renderMethod;
 let store;
 if (root && root.innerHTML !== "") {
   renderMethod = ReactDOM.hydrate
-  // const hydrateStore = createStore(reducer, lGet(window, '__PRELOADED_STATE__'))
-  const hydrateStore = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+  const hydrateStore = createStore(persistRootReducer, composeWithDevTools(applyMiddleware(thunk)));
   store = hydrateStore;
 } else {
   renderMethod = ReactDOM.render
-  const renderStore = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
+  const renderStore = createStore(persistRootReducer, composeWithDevTools(applyMiddleware(thunk)));
   store = renderStore;
 }
 
+export const reduxPersistor = persistStore(store);
 
 
 let html = (
   <React.StrictMode>
       <Provider store={store}>
-        <BrowserRouter>
-        <App></App>
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={reduxPersistor}>
+          <BrowserRouter>
+            <App></App>
+          </BrowserRouter>
+        </PersistGate>
       </Provider>
   </React.StrictMode>
 )

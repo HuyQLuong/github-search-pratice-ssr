@@ -23,11 +23,11 @@ function SearchPage() {
   useEffect(() => {
     setUserList(usersState.users)
     setTotalUser(usersState.total)
-  }, [usersState.total, usersState.users])
+  }, [usersState?.total, usersState?.users])
 
   useEffect(() => {
     setSearchTerm(usersState.query)
-  }, [usersState.query])
+  }, [usersState?.query])
 
   return (
       <PageWrapper>

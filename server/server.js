@@ -7,25 +7,51 @@ import { StaticRouter } from "react-router-dom/server";
 import { createStore } from 'redux'
 import { Provider } from 'react-redux';
 import reducer from 'src/reducer/index';
-
+import { persistReducer } from 'redux-persist';
+import "regenerator-runtime"
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 const port = 3000;
 const server = express();
 
 server.use(express.static('build'));
 
-server.get('/', (req, res) => {
+server.use((req, res, next) => {
+
+  const createNoopStorage = () => {
+    return {
+      getItem(_key) {
+        return Promise.resolve(null);
+      },
+      setItem(_key, value) {
+        return Promise.resolve(value);
+      },
+      removeItem(_key) {
+        return Promise.resolve();
+      },
+    };
+  };
+  const persistConfig = {
+      key: 'root',
+      storage: typeof window !== "undefined" ? createWebStorage("local") : createNoopStorage(),
+  };
+  const rootReducer = persistReducer(persistConfig, reducer);
+
+  req.reduxStore = createStore(rootReducer);
+  next();
+});
+
+server.get('/*', async(req, res) => {
   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
-  const store = createStore(reducer)
 
   const body = renderToString(sheet.collectStyles(
-    <Provider store={store}>
+    <Provider store={req.reduxStore}>
+
       <StaticRouter location={req.url}>
           <App/>
       </StaticRouter>
     </Provider>
   ));
-  const preloadedState = store.getState()
   const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
   const html = ({ body, styles }) => `
     <!DOCTYPE html>
@@ -36,14 +62,6 @@ server.get('/', (req, res) => {
       <body style="margin:0">
         <div id="root">${body}</div>
       </body>
-      <script>
-          // WARNING: See the following for security issues around embedding JSON in HTML:
-          // https://redux.js.org/usage/server-rendering#security-considerations
-          window.__PRELOADED_STATE__ = ${JSON.stringify(preloadedState).replace(
-            /</g,
-            '\\u003c'
-          )}
-        </script>
       <script src="/client.js" defer></script>
     </html>
   `;
