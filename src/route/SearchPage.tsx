@@ -12,7 +12,6 @@ import { setSearchTermAction, setSearchPageAction } from 'src/action/action';
 import { Dispatch } from "redux";
 
 const PageWrapper = styled.div`
-  height: 75vh;
 `
 
 function SearchPage() {

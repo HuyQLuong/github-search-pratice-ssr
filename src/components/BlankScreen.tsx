@@ -6,7 +6,6 @@ import { PeopleAlt as People } from '@styled-icons/material-sharp/PeopleAlt'
 import { MAP_ROUTE_TO_TITLE } from 'src/route/routes'
 
 const BlankScreenWrapper = styled.div`
-  height: 75vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

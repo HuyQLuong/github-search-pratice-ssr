@@ -7,7 +7,7 @@ import { ROUTES } from 'src/route/routes';
 import Header from 'src/components/Header';
 import Footer from 'src/components/Footer';
 import GlobalStyles, { lightTheme, darkTheme } from 'src/theme';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 interface NameToElementMapProps {
   [name: string]: JSX.Element
@@ -29,6 +29,16 @@ const THEME = {
   LIGHT_THEME : 'light',
 }
 
+const ContentWrapper = styled.div`
+  height: 70vh;
+  @media (min-width: 768px) {
+    height: 76vh;
+  }
+
+  @media (min-width: 640px) {
+    height: 76vh;
+  }
+`
 
 function PageWrapper({pageElement, title}: PageWrapperProps) {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -52,12 +62,16 @@ function PageWrapper({pageElement, title}: PageWrapperProps) {
         <GlobalStyles />
         <Header title={title} toggleTheme={toggleTheme} isDarkTheme={isDarkTheme} ></Header>
         {
-          pageElement
+          <ContentWrapper>
+            {pageElement}
+          </ContentWrapper>
         }
         <Footer title={title}></Footer>
     </ThemeProvider>
   )
 }
+
+
 
 function App() {
 

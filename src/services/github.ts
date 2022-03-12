@@ -34,7 +34,7 @@ export const getUserInfoService = async ({username} : {username: string}) => {
 export const getUserRepos = async ({username} : {username: string}) => {
     try {
         const response = await axios.get(
-        `https://api.github.com/${username}/repos`,
+        `https://api.github.com/users/${username}/repos`,
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 
@@ -49,7 +49,7 @@ export const getUserRepos = async ({username} : {username: string}) => {
 export const getUserFollower = async ({username} : {username: string}) => {
     try {
         const response = await axios.get(
-        `https://api.github.com/users/${username}/followers",`,
+        `https://api.github.com/users/${username}/followers`,
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 
@@ -64,7 +64,7 @@ export const getUserFollower = async ({username} : {username: string}) => {
 export const getUserFollowing = async ({username} : {username: string}) => {
     try {
         const response = await axios.get(
-        `https://api.github.com/users/${username}/following",`,
+        `https://api.github.com/users/${username}/following`,
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 

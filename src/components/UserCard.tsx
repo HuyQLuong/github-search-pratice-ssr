@@ -55,7 +55,7 @@ function UserCard ({
 }) {
 
   return (
-        <CardWrapper className='user-card' to={`/user?username=${item.login}`}>
+        <CardWrapper className='card' to={`/user?username=${item.login}`}>
           <Avatar url={item.avatar_url}></Avatar>
           <UserInfo> 
                 <Username>{item.login}</Username>

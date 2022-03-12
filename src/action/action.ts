@@ -126,7 +126,7 @@ export const addUserDetailAction = ({user} :{user: IUsers}) => async (dispatch: 
     if (!Object.keys(user).includes('followerList')){
         followerList = await getUserFollower({username : user.login });
     }
-    if (!Object.keys(user).includes('followerList')){
+    if (!Object.keys(user).includes('followingList')){
         followingList = await getUserFollowing({username : user.login });
     }
     let detailUser = {

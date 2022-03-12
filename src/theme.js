@@ -37,22 +37,33 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
   }
 
-  .user-card {
-    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.05);
-    background: ${({ theme } )  => theme?.background ? theme.background : lightTheme.background};
+  div {
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.text};
+    background-color: ${({ theme } )  => theme?.background ? theme.body : lightTheme.body};
+  }
+
+  ul {
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
+    background-color: ${({ theme } )  => theme?.body ? theme.body : lightTheme.body};
+  }
+
+  .card {
+    box-shadow: 1px 2px 5px ${({ theme } )  => theme?.shadow ? theme.shadow : lightTheme.shadow};
   }
 
 `
 
 export const lightTheme = {
-  body: '#f1f1f1',
+  body: '#ffffff',
   text: '#121620',
-  background: '#ffffff'
+  background: '#ffffff',
+  shadow: 'rgb(0,0,0, 0.05)'
 };
 export const darkTheme = {
   body: '#121620',
   text: '#f1f1f1',
-  background: '#000000'
+  background: '#000000',
+  shadow: 'rgb(256,256,256, 0.1)'
 };
 
 export default GlobalStyles;
