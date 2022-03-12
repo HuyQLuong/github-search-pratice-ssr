@@ -7,7 +7,6 @@ export const getUsersService = async ({query, page} : {query: string, page: numb
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 
-                'Cookie': '_octo=GH1.1.53181638.1624980991; logged_in=no'
             }
         })
         return response.data;
@@ -24,7 +23,51 @@ export const getUserInfoService = async ({username} : {username: string}) => {
         {
             headers: { 
                 'Accept': 'application/vnd.github.v3+json', 
-                'Cookie': '_octo=GH1.1.53181638.1624980991; logged_in=no'
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getUserRepos = async ({username} : {username: string}) => {
+    try {
+        const response = await axios.get(
+        `https://api.github.com/${username}/repos`,
+        {
+            headers: { 
+                'Accept': 'application/vnd.github.v3+json', 
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getUserFollower = async ({username} : {username: string}) => {
+    try {
+        const response = await axios.get(
+        `https://api.github.com/users/${username}/followers",`,
+        {
+            headers: { 
+                'Accept': 'application/vnd.github.v3+json', 
+            }
+        })
+        return response.data;
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+export const getUserFollowing = async ({username} : {username: string}) => {
+    try {
+        const response = await axios.get(
+        `https://api.github.com/users/${username}/following",`,
+        {
+            headers: { 
+                'Accept': 'application/vnd.github.v3+json', 
             }
         })
         return response.data;
