@@ -6,6 +6,7 @@ const initialState: UsersState = {
     total: 0,
     page: 0,
     query: '',
+    isLoadingUserInfo: false,
   }
 
 function reducer (
@@ -13,27 +14,32 @@ function reducer (
     _action: UsersAction
   ): UsersState {
     switch (_action.type) {
-      case actionTypes.ADD_USER_INFO:
-        const newState: UsersState = lCloneDeep(_state);
-        let userIndex = newState.users.findIndex(user => user.login === _action.data['userInfo']['login']);
-        if (userIndex > -1) {
-          newState.users[userIndex] = {
-            ...newState.users[userIndex],
-            ..._action.data['userInfo']
-          }
-        }
-        return {
-          ..._state,
-          users: newState.users,
-        }
       case actionTypes.ADD_USERS:
         return {
           ..._state,
           users: _action.data['userList'],
           total: _action.data['totalUser'],
           page: _action.data['page'],
-          query: _action.data['query']
+          query: _action.data['query'],
+          isLoadingUserInfo: false,
         }
+        case actionTypes.SET_SEARCH_TERM:
+          return {
+            ..._state,
+            query: _action.data['query']
+
+          }
+        case actionTypes.SET_SEARCH_PAGE:
+          return {
+            ..._state,
+            page: _action.data['page']
+
+          }
+        case actionTypes.SET_LOADING_PAGE:
+          return {
+            ..._state,
+            isLoadingUserInfo: _action.data['isLoadingUserInfo']
+          }
       default:
         return _state
     }

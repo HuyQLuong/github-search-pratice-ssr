@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
-import { getUserInfoAction } from 'src/action/action';
 import LikeButton from 'src/components/LikeButton';
+import { NavLink } from 'react-router-dom';
 
-const CardWrapper = styled.div`
+const CardWrapper = styled(NavLink)`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     padding: 0.25rem;
     margin: 0.25rem;
     width: 40%;
-    @media (min-width: 1000px) {
+    max-height: 15%;
+    @media (min-width: 768px) {
         width: 30%;
         padding: 1rem;
     }
     border-radius: 5px;
+    text-decoration: none;
 `
 
 const Avatar = styled.div<{ url: string }>`
@@ -31,8 +31,8 @@ const Avatar = styled.div<{ url: string }>`
 const UserInfo = styled.div`
     height: 100%;
     width: 60%;
-    font-size: 0.5rem;
-    @media (min-width: 1000px) {
+    font-size: 0.6rem;
+    @media (min-width: 768px) {
       font-size: 0.7rem;
     }
 `
@@ -43,6 +43,7 @@ const Username = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 0.5rem;
+
 `
 
 function UserCard ({
@@ -52,29 +53,21 @@ function UserCard ({
   item: { login: string, avatar_url: string }
   likeDisable: boolean
 }) {
-    const dispatch: Dispatch<any> = useDispatch();
-    useEffect(() => {
-        const isEnoughInfo = Object.keys(item).includes('followers') && Object.keys(item).includes('following');
-        if (!isEnoughInfo){
-            dispatch(getUserInfoAction({username: item.login}))
-        }
-    }, [Object.keys(item).length])
-
 
   return (
-    <CardWrapper className='user-card'>
-      <Avatar url={item.avatar_url}></Avatar>
-      <UserInfo> 
-            <Username>{item.login}</Username>
-            {
-                Object.keys(item).includes('followers') && <div>{item['followers']} followers</div>
-                
-            } {
-                Object.keys(item).includes('following') && <div>{item['following']} followings</div>
-            }
-      </UserInfo>  
-      <LikeButton item={item} likeDisable={likeDisable} ></LikeButton>
-    </CardWrapper>
+        <CardWrapper className='user-card' to={`/user?username=${item.login}`}>
+          <Avatar url={item.avatar_url}></Avatar>
+          <UserInfo> 
+                <Username>{item.login}</Username>
+                {
+                    Object.keys(item).includes('followers') && <div>{item['followers']} followers</div>
+                    
+                } {
+                    Object.keys(item).includes('following') && <div>{item['following']} followings</div>
+                }
+          </UserInfo>  
+          <LikeButton item={item} likeDisable={likeDisable} ></LikeButton>
+        </CardWrapper>
   );
 }
 

@@ -3,7 +3,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0.25rem;
     padding: 0.25rem;
-    @media (min-width: 1000px) {
+    @media (min-width: 768px) {
       margin: 0.5rem;
       padding: 1rem;
     }
@@ -32,6 +32,9 @@ const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
     background: ${({ theme } )  => theme?.body ? theme.body : lightTheme.body};
     box-shadow: 1px 2px 5px ${({ theme } )  => theme?.body ? theme.body : lightTheme.body};
+  }
+  a {
+    color: ${({ theme }) => theme?.text ? theme.text : lightTheme.body};
   }
 
   .user-card {

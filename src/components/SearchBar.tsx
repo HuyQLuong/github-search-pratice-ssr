@@ -4,7 +4,7 @@ import { LABEL } from 'src/uiLabel';
 
 import { Dispatch } from "redux";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { getUsersAction } from 'src/action/action';
+import { getUsersAction, setSearchPageAction } from 'src/action/action';
 import { debounce as lDebounce } from 'lodash'
 
 const SearchBarWrapper = styled.div`
@@ -24,22 +24,34 @@ function SearchBar ({
     setSearchTerm: Function,
 }) {
     const dispatch: Dispatch<any> = useDispatch();
+
     const searchTerm: string = useSelector((state: any) => state.users.query, shallowEqual);
+    const pageStore: string = useSelector((state: any) => state.users.page, shallowEqual);
+
     const [queryTerm, setQueryTerm] = useState('')
 
     useEffect(() => {
-        setQueryTerm(searchTerm);
+        if (searchTerm !== queryTerm){
+            setQueryTerm(searchTerm);
+        }
     }, [searchTerm])
+
+    useEffect(() => {
+        if (searchTerm !== queryTerm){
+            setQueryTerm(queryTerm);
+        }
+        if (queryTerm){
+            dispatch(getUsersAction(
+                { query: queryTerm, page: Number(pageStore) ? Number(pageStore) : 1}
+            ))
+        }
+    }, [queryTerm])
 
     const debouncedSearch = React.useRef(
         lDebounce(async (event) => {
             if (event.target.value){
                 setQueryTerm(event.target.value);
-                dispatch(getUsersAction(
-                    { query: event.target.value, page: 1}
-                ))
-            } else {
-                // TODO: clear user
+                dispatch(setSearchPageAction({page: 1}))
             }
         }, 500)
       ).current;

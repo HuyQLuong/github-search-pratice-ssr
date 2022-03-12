@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
-import UserList from 'src/components/UserList'
+import UserList from 'src/components/UserList';
+import Loading from 'src/components/Loading';
 import { getUsersAction } from 'src/action/action';
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
@@ -16,13 +17,13 @@ const Paginate = styled(ReactPaginate).attrs({
     list-style-type: none;
     padding: 0 2rem;
     font-size: 0.5rem;
-    @media (min-width: 1000px) {
+    @media (min-width: 768px) {
       font-size: 1rem;
     }
     li a {
       border-radius: 7px;
       padding: 0.1rem 0.2rem;
-      @media (min-width: 1000px) {
+      @media (min-width: 768px) {
         padding: 0.1rem 0.5rem;
       }
       width: 1.5rem;
@@ -58,11 +59,17 @@ const itemsPerPage = 12;
 function UserPage ({
     users,
     totalUsers,
-    searchTerm
+    searchTerm,
+    setCurrentPage,
+    initPage,
+    isLoading,
 } : {
     users: (IUsers)[],
     totalUsers: number,
     searchTerm: string,
+    setCurrentPage: Function,
+    initPage: number,
+    isLoading: boolean
 }) {
     const dispatch: Dispatch<any> = useDispatch();
     const [currentItems, setCurrentItems] = useState<(IUsers)[]>([]);
@@ -73,18 +80,21 @@ function UserPage ({
     }, [users]);
     
     useEffect(() => {
-      setPageCount(Math.ceil(totalUsers/itemsPerPage + 1));
+      setPageCount(Math.ceil(totalUsers/itemsPerPage));
     }, [totalUsers]);
 
   const handlePageClick = (event) => {
     const page: number = Number(event.selected);
     //Working on caching previous page
     dispatch(getUsersAction({query: searchTerm, page: page + 1}))
+    setCurrentPage(page +1)
   };
 
   return (
     <>
-     <UserList currentItems={currentItems} likeDisable={false}></UserList>
+      {isLoading ? <Loading></Loading> :
+        <UserList currentItems={currentItems} likeDisable={false}></UserList>
+      }
       <Paginate
         breakLabel="..."
         nextLabel=">"
@@ -92,6 +102,7 @@ function UserPage ({
         pageRangeDisplayed={5}
         pageCount={pageCount}
         previousLabel="<"
+        forcePage={initPage-1}
       />
     </>
   );

@@ -21,7 +21,6 @@ function reducer (
           ..._state,
           users: likeUser
         }
-
       default:
         return _state;
     }
