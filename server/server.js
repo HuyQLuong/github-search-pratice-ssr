@@ -75,4 +75,4 @@ server.get('/*', async(req, res) => {
 
 
 
-server.listen(process.env.PORT || port, () => console.log('Example app listening on port 3000!'));
+server.listen(process.env.PORT || port, '0.0.0.0', () => console.log('Example app listening on port 3000!'));
