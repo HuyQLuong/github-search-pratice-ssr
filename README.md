@@ -69,4 +69,4 @@ https://huyluong-github-user-search.herokuapp.com/
 ##TODO:
 - [ ] Pagination in `UserDetailPage`
 - [ ] Add loading in `UserDetailPage`
-- [ ] Caching search user result base on searchTerm and paging
+- [ ] Caching search user result base on searchTerm and page
