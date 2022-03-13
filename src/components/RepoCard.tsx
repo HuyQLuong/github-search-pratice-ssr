@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
@@ -18,17 +18,17 @@ const CardWrapper = styled.div`
     text-decoration: none;
 `
 
-const RepoInfo = styled.div`
+const DetailInfo = styled.div`
     font-size: 0.6rem;
     @media (min-width: 768px) {
       font-size: 0.7rem;
     }
 `
-const RepoInfoWrapper = styled.div`
+const UserDetailWrapper = styled.div`
     margin-top: 1rem;
 `
 
-const RepoName = styled.div`
+const DetailName = styled.div`
     font-weight: 700;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -37,28 +37,37 @@ const RepoName = styled.div`
     width: 70%;
 `
 
-function RepositoryCard ({
+
+function UserDetailsCard ({
   repo,
 } : {
-  repo: any
+  repo: any,
 }) {
+  const renderRepoCard = useCallback(() => {
+    return (
+      <>
+        <DetailName>
+              {repo.name}
+          </DetailName>
+          <UserDetailWrapper>
+              <DetailInfo>
+                  {repo.forks} folk{repo.forks > 1 ? 's' : ''}
+              </DetailInfo>
+              <DetailInfo>
+                  {repo.watchers} star{repo.watchers > 1 ? 's' : ''}
+              </DetailInfo>
+          </UserDetailWrapper>
+      </>
+    )
+  }, [repo])
+
 
   return (
     <CardWrapper className='card'>
-        <RepoName>
-            {repo.name}
-        </RepoName>
-        <RepoInfoWrapper>
-            <RepoInfo>
-                {repo.forks} folk{repo.forks > 1 ? 's' : ''}
-            </RepoInfo>
-            <RepoInfo>
-                {repo.watchers} star{repo.watchers > 1 ? 's' : ''}
-            </RepoInfo>
-        </RepoInfoWrapper>
+        {renderRepoCard()}
     </CardWrapper>
   );
 }
 
 
-export default RepositoryCard;
+export default UserDetailsCard;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import UserCard from 'src/components/UserCard';
 import styled from 'styled-components';
 
@@ -11,7 +11,8 @@ const PageWrapper = styled.div`
   margin-top: 1rem;
 `
 
-function UserPage ({
+
+function UserList ({
   currentItems,
   likeDisable,
 } : {
@@ -20,16 +21,16 @@ function UserPage ({
 }) {
   return (
     <PageWrapper>
-      {
-        currentItems.map((item: { login: string, avatar_url: string}) => {
-            return (
-              <UserCard key={item.login} item={item} likeDisable={likeDisable} ></UserCard>
-            )
-        })
-      }
+        {
+          currentItems.map((item: { login: string, avatar_url: string}) => {
+              return (
+                <UserCard key={item.login} item={item} likeDisable={likeDisable} ></UserCard>
+              )
+          })
+        }
     </PageWrapper>
   );
 }
 
 
-export default UserPage;
+export default UserList;

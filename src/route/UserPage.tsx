@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import Repositories from 'src/components/Repositories';
+import UserDetailsList from 'src/components/UserDetailsList';
 import 'react-tabs/style/react-tabs.css';
-import { addUserDetailAction } from 'src/action/action';
+import { addUserDetailAction, getUserAction } from 'src/action/action';
 import { Dispatch } from "redux";
 import { get as lGet } from 'lodash';
+import { useLocation } from 'react-router-dom';
+
 
 
 const PageWrapper = styled.div`
@@ -89,37 +91,59 @@ const TabsStyled = styled(Tabs)`
     position: sticky;
     top: 0;
     padding-bottom: 1rem;
+    z-index: 20;
   }
 `
 
 function UserPage() {
   const dispatch: Dispatch<any> = useDispatch();
-  const parsedQuery = queryString.parse(window.location.search)
+  const location = useLocation();
   const mapUserNameToUserStore = useSelector((state: any) => state.userDetails.mapUserNameToUser, shallowEqual);
   const userStore = useSelector((state: any) => state.users.users, shallowEqual);
   const likedUserStore = useSelector((state: any) => state.likes.users, shallowEqual);
 
-  const [ user, setUser ] = useState<IUsers | null>(null)
-
+  const [ user, setUser ] = useState<any>({})
+  const [ username, setUsername ] = useState('')
 
   useEffect(() => {
+    console.log("trigger location")
+    const parsedQuery = queryString.parse(window.location.search);
     if (!parsedQuery?.username) return;
-    let matchedUser = mapUserNameToUserStore[String(parsedQuery.username)]
-    if (!matchedUser){
-      matchedUser = userStore.find(user => user.login === parsedQuery.username)
-      if (!matchedUser) {
-        matchedUser = likedUserStore.find(user => user.login === parsedQuery.username)
-      } 
+    let userFromDetailStore = mapUserNameToUserStore[String(parsedQuery.username).toLowerCase()]
+    if (userFromDetailStore) {
+      setStates({user: userFromDetailStore, username: user.login})
+      return;
     }
-    if (!Object.keys(matchedUser).some(key=> ['repoList','followerList', 'followingList'].includes(key))){
-      dispatch(addUserDetailAction({user: matchedUser}))
+    let userFromLikedStore = likedUserStore.find(user => user.login === parsedQuery.username)
+    if (userFromLikedStore) {
+      setStates({user: userFromLikedStore, username: userFromLikedStore.login})
+      return;
     }
-  }, [!!parsedQuery])
+    let userFromSearchStore = userStore.find(user => user.login === parsedQuery.username)
+    if (userFromSearchStore) {
+      setStates({user: userFromSearchStore, username: userFromSearchStore.login})
+      return;
+    }
+    setStates({user: {}, username: parsedQuery.username})
+    dispatch(getUserAction({username: String(parsedQuery.username)}));
+  }, [dispatch, location])
 
   useEffect(() => {
-    let currentUser = mapUserNameToUserStore[String(parsedQuery.username)]
-    setUser(currentUser)
+    let currentUser = mapUserNameToUserStore[String(username).toLowerCase()]
+    if (currentUser) setUser(currentUser)
   }, [mapUserNameToUserStore])
+
+  useEffect(() => {
+    if (!user?.login) return;
+    if (!Object.keys(user).some(key=> ['repoList','followerList', 'followingList'].includes(key))){
+      dispatch(addUserDetailAction({user: user}))
+    }
+  }, [dispatch, user])
+
+  const setStates = ({user, username}) => {
+    setUser(user);
+    setUsername(username);
+  }
 
   const repoTabTitle = useMemo(() => lGet(user,'public_repos', 0) ? `Repositories (${lGet(user,'public_repos')})` : `Repository (0)`, [user])
   const followerTabTitle = useMemo(() => lGet(user,'followers', 0) ? `Followers (${lGet(user,'followers')})` : `Follower (0)`, [user])
@@ -128,7 +152,7 @@ function UserPage() {
   return (
     <PageWrapper>
       {
-        user && <>
+        user && !!Object.keys(user).length && <>
           <AvatarWrapper>
             <Avatar url={user['avatar_url']}></Avatar>
             <Username>{user['login']}</Username>
@@ -143,13 +167,13 @@ function UserPage() {
                   </TabList>
 
                   <TabPanel>
-                    <Repositories user={user}></Repositories>
+                    <UserDetailsList user={user} type={'repo'}></UserDetailsList>
                   </TabPanel>
                   <TabPanel>
-                    <h2>Any content 2</h2>
+                    <UserDetailsList user={user} type={'follower'}></UserDetailsList>
                   </TabPanel>
                   <TabPanel>
-                    <h2>Any content 3</h2>
+                    <UserDetailsList user={user} type={'following'}></UserDetailsList>
                   </TabPanel>
                 </TabsStyled>
             </TabWrapper>

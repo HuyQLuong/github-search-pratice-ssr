@@ -4,7 +4,7 @@ import { cloneDeep as lCloneDeep} from 'lodash';
 const initialState: UsersState = {
     users: [],
     total: 0,
-    page: 0,
+    page: 1,
     query: '',
     isLoadingUserInfo: false,
   }

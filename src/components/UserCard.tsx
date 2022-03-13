@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import LikeButton from 'src/components/LikeButton';
 import { NavLink } from 'react-router-dom';
@@ -54,19 +54,27 @@ function UserCard ({
   likeDisable: boolean
 }) {
 
+  const renderContent = useCallback(() => {
+    return (
+      <>
+        <Avatar url={item.avatar_url}></Avatar>
+            <UserInfo> 
+                  <Username>{item.login}</Username>
+                  {
+                      Object.keys(item).includes('followers') && <div>{item['followers']} followers</div>
+                      
+                  } {
+                      Object.keys(item).includes('following') && <div>{item['following']} followings</div>
+                  }
+            </UserInfo>  
+            <LikeButton item={item} likeDisable={likeDisable} ></LikeButton>
+      </>
+    )
+  }, [item])
+
   return (
         <CardWrapper className='card' to={`/user?username=${item.login}`}>
-          <Avatar url={item.avatar_url}></Avatar>
-          <UserInfo> 
-                <Username>{item.login}</Username>
-                {
-                    Object.keys(item).includes('followers') && <div>{item['followers']} followers</div>
-                    
-                } {
-                    Object.keys(item).includes('following') && <div>{item['following']} followings</div>
-                }
-          </UserInfo>  
-          <LikeButton item={item} likeDisable={likeDisable} ></LikeButton>
+          {renderContent()}
         </CardWrapper>
   );
 }

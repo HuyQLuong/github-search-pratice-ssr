@@ -84,23 +84,39 @@ export const getUsersAction = ({query, page} :{query: string, page: number}) => 
     const totalUser = response.total_count;
     let userWithInfoList: ({login: string})[] = [];
     if (userList && userList.length > 0) {
-        for (let i=0; i < userList.length; i++){
-            const user = userList[i];
-            const response: any = await getUserInfoService({username: user.login});
-            if (response){
-                userWithInfoList.push({
-                    ...user,
-                    ...response
-                })
-
-            }
-        }
-        dispatch(addUsers({userList: userWithInfoList, totalUser, query, page,}))
+        const loadUserInfo = new Promise ((resolve, reject) => {
+            userList.forEach( async (user, idx) => {
+                try {
+                    await getUserInfoService({username: user.login}).then((response) => {
+                        if (response){
+                            userWithInfoList.push({
+                                ...user,
+                                ...response
+                            })
+                            if (userWithInfoList.length === userList.length){
+                                resolve(true);
+                            }
+                        }
+                    });
+                } catch {
+                    resolve(true);
+                }
+            })
+        })
+        loadUserInfo.then(() => dispatch(addUsers({userList: userWithInfoList, totalUser, query, page,})));
     } else {
         dispatch(setLoadingPage({ status: false}))
+        dispatch(addUsers({userList: [], totalUser, query, page,}))
 
     }
 };
+
+export const getUserAction = ({username} :{username: string}) => async (dispatch: UserDispatchType) => {
+    const response: any = await getUserInfoService({username: username});
+    if (response) {
+        dispatch(addUserDetail({user: response}))
+    }
+}
 
 export const setSearchTermAction = ({searchTerm} :{searchTerm: string}) => async (dispatch: UserDispatchType) => {
     dispatch(setSearchTerm({searchTerm}));
@@ -129,12 +145,16 @@ export const addUserDetailAction = ({user} :{user: IUsers}) => async (dispatch: 
     if (!Object.keys(user).includes('followingList')){
         followingList = await getUserFollowing({username : user.login });
     }
-    let detailUser = {
-        ...user,
-        repoList,
-        followerList,
-        followingList
+
+    let isValidUser = repoList.length || followerList.length || followingList.length
+    if (isValidUser){
+        let detailUser = {
+            ...user,
+            repoList,
+            followerList,
+            followingList
+        }
+        dispatch(addUserDetail({user: detailUser}))
     }
-    dispatch(addUserDetail({user: detailUser}))
 };
 

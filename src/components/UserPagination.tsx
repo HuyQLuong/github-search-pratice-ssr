@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import UserList from 'src/components/UserList';
 import Loading from 'src/components/Loading';
+import BlankScreen from 'src/components/BlankScreen';
 import { getUsersAction } from 'src/action/action';
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
+import { MAP_ROUTE_TO_TITLE } from 'src/route/routes';
+
 
 
 const Paginate = styled(ReactPaginate).attrs({
@@ -55,8 +58,9 @@ const Paginate = styled(ReactPaginate).attrs({
   `;
 
 const itemsPerPage = 12;
+const GITHUB_API_MAXIMUM_PAGE = 82;
 
-function UserPage ({
+function UserPagination ({
     users,
     totalUsers,
     searchTerm,
@@ -69,31 +73,45 @@ function UserPage ({
     searchTerm: string,
     setCurrentPage: Function,
     initPage: number,
-    isLoading: boolean
+    isLoading: Boolean,
 }) {
     const dispatch: Dispatch<any> = useDispatch();
     const [currentItems, setCurrentItems] = useState<(IUsers)[]>([]);
     const [pageCount, setPageCount] = useState(0);
+    const [ isExceedLimit, setIsExceedLimit ] = useState(false)
 
     useEffect(() => {
         setCurrentItems(users);
     }, [users]);
     
     useEffect(() => {
-      setPageCount(Math.ceil(totalUsers/itemsPerPage));
+      const page = Math.ceil(totalUsers/itemsPerPage)
+      setPageCount(page);
     }, [totalUsers]);
 
   const handlePageClick = (event) => {
     const page: number = Number(event.selected);
-    //Working on caching previous page
-    dispatch(getUsersAction({query: searchTerm, page: page + 1}))
-    setCurrentPage(page +1)
+    debugger;
+    if (page > GITHUB_API_MAXIMUM_PAGE) {
+      setIsExceedLimit(true)
+    } else {
+      if (isExceedLimit) setIsExceedLimit(false)
+      //TODO: Working on caching previous page
+      dispatch(getUsersAction({query: searchTerm, page: page + 1}))
+      setCurrentPage(page +1)
+    }
   };
 
   return (
     <>
-      {isLoading ? <Loading></Loading> :
-        <UserList currentItems={currentItems} likeDisable={false}></UserList>
+      {
+        isExceedLimit && <BlankScreen page={MAP_ROUTE_TO_TITLE.pageExceed}></BlankScreen>
+      }
+      {
+        !isExceedLimit && (
+          isLoading ? <Loading></Loading> : (
+          <UserList currentItems={currentItems} likeDisable={false}></UserList>
+        ))
       }
       <Paginate
         breakLabel="..."
@@ -109,4 +127,4 @@ function UserPage ({
 }
 
 
-export default UserPage;
+export default UserPagination;

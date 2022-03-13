@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heart as HeartIcon } from '@styled-icons/boxicons-solid/Heart';
 import styled from 'styled-components';
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
@@ -32,7 +32,7 @@ function LikeButton ({
    const likedUsersState: IUsers[] = useSelector((state: any) => state.likes.users, shallowEqual);
 
 
-   const [isLike, setIsLike] = useState(likeDisable)
+   const [isLike, setIsLike] = useState(false)
 
     useEffect(() => {
         const isLikedUser = !!likedUsersState.find(likedUser => likedUser.login === item.login)
@@ -41,7 +41,8 @@ function LikeButton ({
         }
     },[item, likedUsersState])
 
-   const handleClick = () => {
+   const handleClick = (e) => {
+       e.preventDefault();
        if (likeDisable) return;
         setIsLike(!isLike)
         if (!isLike){

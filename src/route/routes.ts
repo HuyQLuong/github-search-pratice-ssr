@@ -21,6 +21,8 @@ export const ROUTES = [
 
 export const MAP_ROUTE_TO_TITLE = {
   'search': 'Search',
+  'searchEmpty': 'Search-Empty',
+  'pageExceed': 'Page-Exceed',
   'liked': 'Favorite',
   'user':  'User',
 }

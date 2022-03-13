@@ -17,7 +17,7 @@ export const getUsersService = async ({query, page} : {query: string, page: numb
 
 
 export const getUserInfoService = async ({username} : {username: string}) => {
-    try {
+    // try {
         const response = await axios.get(
         `https://api.github.com/users/${username}`,
         {
@@ -26,9 +26,10 @@ export const getUserInfoService = async ({username} : {username: string}) => {
             }
         })
         return response.data;
-    } catch (error) {
-        console.error(error)
-    }
+    // } 
+    // catch (error) {
+    //     console.error(error)
+    // }
 }
 
 export const getUserRepos = async ({username} : {username: string}) => {

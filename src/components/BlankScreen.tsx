@@ -10,6 +10,7 @@ const BlankScreenWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 85%;
 `
 const GithubStyled = styled(Github)`
   opacity: 0.5;
@@ -21,6 +22,7 @@ const PeopleStyled = styled(People)`
 `
 
 const BlankScreenMessage = styled.span`
+    margin: 1rem;
     height: 5rem;
     max-width: 20rem;   
     text-align: center;
@@ -56,6 +58,18 @@ const renderBlankPage = (page: string) => {
                     <BlankScreenMessage>{LABEL.LIKED_BLANK_SCREEN_MESSAGE}</BlankScreenMessage>
                 </>
             );
+        case MAP_ROUTE_TO_TITLE.searchEmpty:
+            return (
+                <>
+                    <BlankScreenMessage>{LABEL.SEARCH_EMPTY_SCREEN_MESSAGE}</BlankScreenMessage>
+                </>
+            )
+        case MAP_ROUTE_TO_TITLE.pageExceed:
+            return (
+                <>
+                    <BlankScreenMessage>{LABEL.SEARCH_PAGE_EXCEED_LIMIT_MESSAGE}</BlankScreenMessage>
+                </>
+            )
     }
 }
 

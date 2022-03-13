@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useCallback, useMemo} from 'react';
 import styled from 'styled-components';import { ROUTES } from 'src/route/routes';
 import {NavLink} from 'react-router-dom';
 import { Search as SearchIcon } from '@styled-icons/boxicons-regular/Search';
 import { Heart as HeartIcon } from '@styled-icons/boxicons-solid/Heart';
 import { MAP_ROUTE_TO_TITLE } from 'src/route/routes';
+import { useSelector, shallowEqual } from "react-redux";
+
 
 const FooterWrapper = styled.div`
     box-shadow: 0px -4px 4px 0px #0000000D;
@@ -57,10 +59,19 @@ const MenuLabel = styled.span`
 `
 
 function Footer ({title} :{ title: String }) {
-    const activeRoute = ROUTES.find((route: IRoute) => route.title === title);
+    const searchTermStore = useSelector((state: any) => state.users?.query, shallowEqual)
+    const pageStore = useSelector((state: any) => state.users?.page, shallowEqual)
+    
+    const generateSearchPageUrl = useCallback(() => {
+        if (title !== MAP_ROUTE_TO_TITLE.liked) return '/'
+        if (!searchTermStore || !pageStore) return '/'
+        return `/?query=${searchTermStore}&&page=${pageStore}`
+    }, [title])
+
+    const activeRoute = useMemo(() => ROUTES.find((route: IRoute) => route.title === title),[title]);
     return (
         <FooterWrapper>
-           <MenuIconWrapper end to="/">
+           <MenuIconWrapper end to={generateSearchPageUrl()}>
                 <SearchIconStyled active={activeRoute?.title === MAP_ROUTE_TO_TITLE.search} ></SearchIconStyled>
                 <MenuLabel active={activeRoute?.title === MAP_ROUTE_TO_TITLE.search}>Search</MenuLabel>
            </MenuIconWrapper>

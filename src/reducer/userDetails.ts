@@ -11,11 +11,12 @@ function reducer (
   ): UserDetailsState {
     switch (_action.type) {
       case actionTypes.ADD_USER_DETAILS:
+        const username = String(_action.data['user']['login']).toLowerCase()
         return {
           ..._state,
           mapUserNameToUser: { 
             ..._state.mapUserNameToUser, 
-            ...{ [_action.data['user']['login']]: _action.data['user'] }}
+            ...{ [username]: _action.data['user'] }}
         }
       default:
         return _state
