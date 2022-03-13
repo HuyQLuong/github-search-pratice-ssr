@@ -32,7 +32,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "webpack --config webpack.config.js && node ./build/server.js",
+    "start": "npm install --dev && webpack --config webpack.config.js --mode production && node ./build/server.js",
+    "start:ssr": "webpack --config webpack.config.js && node ./build/server.js",
     "start:ssr-live": "webpack --config webpack.config.js --watch --mode=development & babel src -d build --watch & nodemon build/server.js",
     "start:react": "cross-env REACT_APP_IS_REACT=true && react-scripts start",
     "build": "npm run build:server && npm run build:client",
