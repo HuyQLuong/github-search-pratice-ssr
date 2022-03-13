@@ -1,46 +1,72 @@
-# Getting Started with Create React App
+# Front end Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+I am building a simpler version of GitHub search console website so that users can browse & explore. This website includes following 3 pages
 
-## Available Scripts
+Search Page /: User can type in username and show a list of users
+Liked Page /liked: User can keep a list of liked users for future reference
+User Detail Page /users/:username: User can know more about an individual user
 
-In the project directory, you can run:
+https://huyluong-github-user-search.herokuapp.com/
 
-### `npm start`
+## User story
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Basic
+- [x] As a user, I can search users based on username and view a list of user cards with pagination
+- [x] As a user, within the list, I can see username, avatar image, followers count and following count on each card (App will not show follower + following number while api rate limits)
+- [x] As a user, I can like & unlike users while searching & browsing
+- [x] As a user, I can view a list of liked users (preserve after refreshing the browsers)
+- [x] As a user, I can view a specific user's information, including name, contact info, lists of repositories, list of followers & list of following users.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Bonus
+- [x] As a user, I can view & use this website via desktop as well as mobile
+- [x] As a user, I can copy & paste current website url and it will always show the same contents under the same browser
+- [x] As a user, I can search as I type without manually clicking a search button
 
-### `npm test`
+## Design Materials
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Basic
+- [x] Create the website following this design file on figma
 
-### `npm run build`
+### Bonus
+- [x] A default or fallback image will be better.
+- [x] Search Page will display pagination tab if needed (we will not enforce Liked Page)
+- [x] Loading, error, and empty states are properly handled
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technical Requirements
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Basic:
+- [x] Consume GitHub API
+- [x] This website must be built using React. React frameworks are welcome
+- [x] Redux is used for state management
+- [x] CSS-in-JS solutions is used
+- [x] This website is production ready and deployed with a url: https://huyluong-github-user-search.herokuapp.com/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Bonus:
+- [x] Written in TypeScript (please explain if any is used)
+  - `src/action/action.ts:118`: `any` was used since respone from Github API could change
+  - `src/components/UserDetailsList.tsx:19`: `any` was used since `repoList`/`followerList`/`followingList`could exist or not
+- [x] All pages are server-side rendered (can be static)
+- [x] Pay attention to user experience (UX) when fetching data from API, navigating between pages & loading large contents.
+- [x] Support dark mode
 
-### `npm run eject`
+## Process for local development:
+1. Set up project using `create-react-app`
+2. Setup express server for server-side rendering
+3. Handle webpack config
+4. Setup styling with server-side rendering with `styled-component`
+5. Support dark mode 
+6. Setup redux with server-side rendering (using `redux-thunk` middleware) 
+7. Setup redux-persist with server-side rendering save state and prevent loosing data when reload
+8. Using `react-router-dom` to handle routing 
+9. Create components and working on handling feature:
+  - Using `styled-component` for styling
+  - Using `react-tabs` to show tab in `UserDetailPage`
+  - Handle URL so that we can copy url and paste to show the same content (using `querystring` to parse url)
+  - Using `styled-icons` for icon such as github icon, like icon...
+10. Fix bugs
+11. Handle deploy to Heroku
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+##TODO:
+- [ ] Pagination in `UserDetailPage`
+- [ ] Add loading in `UserDetailPage`
+- [ ] Caching search user result base on searchTerm and page
