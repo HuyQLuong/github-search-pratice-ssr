@@ -7,7 +7,7 @@ import { MAP_ROUTE_TO_TITLE } from 'src/route/routes'
 
 function LikedPage() {
 
-  const likedUsersState: IUsers[] = useSelector((state: any) => state.likes.users, shallowEqual);
+  const likedUsersState: IUser[] = useSelector((state: { likes: {users: (IUser)[]}}) => state.likes.users, shallowEqual);
 
   return (
     <>

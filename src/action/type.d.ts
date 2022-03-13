@@ -1,10 +1,10 @@
-interface IUsers {
+interface IUser {
     avatar_url: string,
     login: string
   }
   
   type UsersState = {
-    users: IUsers[]
+    users: IUser[]
     total: number
     page: number
     query: string
@@ -17,7 +17,7 @@ interface IUsers {
   }
   
   type LikesState = {
-    users: IUsers[]
+    users: IUser[]
   }
   
   type LikesAction = {

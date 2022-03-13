@@ -1,5 +1,4 @@
 import * as actionTypes from "src/reducer/actionTypes";
-import { cloneDeep as lCloneDeep} from 'lodash';
 
 const initialState: UserDetailsState = {
     mapUserNameToUser: {},

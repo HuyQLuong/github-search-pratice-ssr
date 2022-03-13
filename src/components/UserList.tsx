@@ -16,7 +16,7 @@ function UserList ({
   currentItems,
   likeDisable,
 } : {
-  currentItems: IUsers[],
+  currentItems: IUser[],
   likeDisable: boolean,
 }) {
   return (

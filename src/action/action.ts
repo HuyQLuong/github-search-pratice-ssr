@@ -16,7 +16,7 @@ function addUsers({userList, totalUser, page, query} : {userList: {login: string
 }
 
 
-function likeUser({user} : { user : IUsers}) {
+function likeUser({user} : { user : IUser}) {
     const action: LikesAction = {
       type: actionTypes.ADD_LIKED_USER,
       data: {
@@ -26,7 +26,7 @@ function likeUser({user} : { user : IUsers}) {
     return action;
 }
 
-function unLikeUser({user} : { user : IUsers}) {
+function unLikeUser({user} : { user : IUser}) {
     const action: LikesAction = {
       type: actionTypes.UNLIKED_USER,
       data: {
@@ -66,7 +66,7 @@ function setLoadingPage({status} : { status : boolean}) {
     return action;
 }
 
-function addUserDetail({user} :{ user: IUsers}) {
+function addUserDetail({user} :{ user: IUser}) {
     const action: UserDetailsAction = {
         type: actionTypes.ADD_USER_DETAILS,
         data: {
@@ -79,7 +79,7 @@ function addUserDetail({user} :{ user: IUsers}) {
 
 export const getUsersAction = ({query, page} :{query: string, page: number}) => async (dispatch: UserDispatchType) => {
     dispatch(setLoadingPage({ status: true}))
-    const response: any = await getUsersService({query, page});
+    const response: { items: [], total_count: number} = await getUsersService({query, page});
     const userList: {login: string}[] = response.items;
     const totalUser = response.total_count;
     let userWithInfoList: ({login: string})[] = [];
@@ -99,7 +99,10 @@ export const getUsersAction = ({query, page} :{query: string, page: number}) => 
                         }
                     });
                 } catch {
-                    resolve(true);
+                    userWithInfoList.push({...user})
+                    if (userWithInfoList.length === userList.length){
+                        resolve(true);
+                    } 
                 }
             })
         })
@@ -126,15 +129,15 @@ export const setSearchPageAction = ({page} :{page: number}) => async (dispatch: 
     dispatch(setSearchPage({page}));
 };
 
-export const likeUserAction = ({user} :{user: IUsers}) => async (dispatch: LikeDispatchType) => {
+export const likeUserAction = ({user} :{user: IUser}) => async (dispatch: LikeDispatchType) => {
     dispatch(likeUser({user}));
 };
 
-export const unLikeUserAction = ({user} :{user: IUsers}) => async (dispatch: LikeDispatchType) => {
+export const unLikeUserAction = ({user} :{user: IUser}) => async (dispatch: LikeDispatchType) => {
     dispatch(unLikeUser({user}));
 };
 
-export const addUserDetailAction = ({user} :{user: IUsers}) => async (dispatch: UserDetailDispatchType) => {
+export const addUserDetailAction = ({user} :{user: IUser}) => async (dispatch: UserDetailDispatchType) => {
     let repoList, followerList, followingList;
     if (!Object.keys(user).includes('repoList')){
         repoList = await getUserRepos({username : user.login });

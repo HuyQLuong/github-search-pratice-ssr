@@ -21,14 +21,14 @@ function SearchPage() {
   const location = useLocation();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const usersListStore = useSelector((state: any) => state.users.users, shallowEqual);
-  const totalUserStore = useSelector((state: any) => state.users.total, shallowEqual);
-  const isLoadingUserInfoStore = useSelector((state: any) => state.users.isLoadingUserInfo, shallowEqual);
-  const searchTermStore = useSelector((state: any) => state.users?.query, shallowEqual)
-  const pageStore = useSelector((state: any) => state.users?.page, shallowEqual)
+  const usersListStore = useSelector((state: { users: {users: (IUser)[]}}) => state.users.users, shallowEqual);
+  const totalUserStore = useSelector((state: { users: { total: number }}) => state.users.total, shallowEqual);
+  const isLoadingUserInfoStore = useSelector((state:  { users: { isLoadingUserInfo: boolean }}) => state.users.isLoadingUserInfo, shallowEqual);
+  const searchTermStore = useSelector((state: { users: { query: string }}) => state.users?.query, shallowEqual)
+  const pageStore = useSelector((state: { users: { page: number }}) => state.users?.page, shallowEqual)
 
 
-  const [ userList, setUserList ] = useState([])
+  const [ userList, setUserList ] = useState<(IUser)[]>([])
   const [ totalUsers, setTotalUsers ] = useState(0);
   const [ searchTerm, setSearchTerm ] = useState('');
   const [ currentPage, setCurrentPage ] = useState(1);
@@ -50,7 +50,7 @@ function SearchPage() {
       dispatch(setSearchPageAction({page : Number(parsedQuery.page)}))
       setCurrentPage(Number(parsedQuery.page))
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (!isLoadingUserInfoStore){
@@ -65,6 +65,7 @@ function SearchPage() {
 
   useEffect(() => {
     if (!searchTerm || !currentPage) return;
+    debugger;
     const url = `${searchTerm ? `?query=${searchTerm}`: ''}${searchTerm && currentPage ? `&&page=${currentPage}` : ''}`
     if (window.location.search !== url){
       navigate(url)
@@ -75,7 +76,6 @@ function SearchPage() {
     const parsedQuery = queryString.parse(window.location.search)
     if (!parsedQuery) return;
     if (Number(parsedQuery.page) > 83) return;
-    debugger;
     if (parsedQuery && parsedQuery.query === searchTermStore && Number(parsedQuery.page) === Number(pageStore)) return;
     dispatch(getUsersAction({query: String(parsedQuery.query), page: Number(parsedQuery.page)}))
   }, [location])

@@ -4,9 +4,6 @@ import ReactPaginate from 'react-paginate';
 import UserList from 'src/components/UserList';
 import Loading from 'src/components/Loading';
 import BlankScreen from 'src/components/BlankScreen';
-import { getUsersAction } from 'src/action/action';
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 import { MAP_ROUTE_TO_TITLE } from 'src/route/routes';
 
 
@@ -68,15 +65,14 @@ function UserPagination ({
     initPage,
     isLoading,
 } : {
-    users: (IUsers)[],
+    users: (IUser)[],
     totalUsers: number,
     searchTerm: string,
     setCurrentPage: Function,
     initPage: number,
     isLoading: Boolean,
 }) {
-    const dispatch: Dispatch<any> = useDispatch();
-    const [currentItems, setCurrentItems] = useState<(IUsers)[]>([]);
+    const [currentItems, setCurrentItems] = useState<(IUser)[]>([]);
     const [pageCount, setPageCount] = useState(0);
     const [ isExceedLimit, setIsExceedLimit ] = useState(false)
 
@@ -91,13 +87,10 @@ function UserPagination ({
 
   const handlePageClick = (event) => {
     const page: number = Number(event.selected);
-    debugger;
     if (page > GITHUB_API_MAXIMUM_PAGE) {
       setIsExceedLimit(true)
     } else {
       if (isExceedLimit) setIsExceedLimit(false)
-      //TODO: Working on caching previous page
-      dispatch(getUsersAction({query: searchTerm, page: page + 1}))
       setCurrentPage(page +1)
     }
   };

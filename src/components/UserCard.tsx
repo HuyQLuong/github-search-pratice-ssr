@@ -10,11 +10,17 @@ const CardWrapper = styled(NavLink)`
     padding: 0.25rem;
     margin: 0.25rem;
     width: 40%;
-    max-height: 15%;
+    min-height: 2rem;
+    
     @media (min-width: 768px) {
         width: 30%;
         padding: 1rem;
     }
+
+    @media (min-height: 768px){
+      min-height: 3rem;
+    }
+    
     border-radius: 5px;
     text-decoration: none;
 `

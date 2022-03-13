@@ -78,7 +78,7 @@ function App() {
   return (
           <Routes>
               {
-                ROUTES.map((route: any) => {
+                ROUTES.map((route: IRoute) => {
                   return(
                     <Route
                       key={String(route.path)}

@@ -1,5 +1,4 @@
 import * as actionTypes from "src/reducer/actionTypes";
-import { cloneDeep as lCloneDeep} from 'lodash';
 
 const initialState: UsersState = {
     users: [],
@@ -15,6 +14,7 @@ function reducer (
   ): UsersState {
     switch (_action.type) {
       case actionTypes.ADD_USERS:
+        debugger;
         return {
           ..._state,
           users: _action.data['userList'],

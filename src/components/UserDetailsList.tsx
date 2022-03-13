@@ -16,7 +16,7 @@ function UserDetailsList ({
     user,
     type,
 } : {
-    user: any
+    user: any,
     type: string
 }) {
   return (

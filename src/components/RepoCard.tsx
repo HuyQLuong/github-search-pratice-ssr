@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
 const CardWrapper = styled.div`
     display: flex;
@@ -41,7 +40,7 @@ const DetailName = styled.div`
 function UserDetailsCard ({
   repo,
 } : {
-  repo: any,
+  repo: Repo,
 }) {
   const renderRepoCard = useCallback(() => {
     return (

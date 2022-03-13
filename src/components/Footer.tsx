@@ -59,8 +59,8 @@ const MenuLabel = styled.span`
 `
 
 function Footer ({title} :{ title: String }) {
-    const searchTermStore = useSelector((state: any) => state.users?.query, shallowEqual)
-    const pageStore = useSelector((state: any) => state.users?.page, shallowEqual)
+    const searchTermStore = useSelector((state: {users: { query: string}}) => state.users?.query, shallowEqual)
+    const pageStore = useSelector((state: {users: { page: number }}) => state.users?.page, shallowEqual)
     
     const generateSearchPageUrl = useCallback(() => {
         if (title !== MAP_ROUTE_TO_TITLE.liked) return '/'

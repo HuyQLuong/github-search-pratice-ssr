@@ -41,9 +41,10 @@ const common = {
       },
       {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: [
           MiniCssExtractPlugin.loader, // instead of style-loader
-          'css-loader'
+          'css-loader',
         ]
       }
     ],

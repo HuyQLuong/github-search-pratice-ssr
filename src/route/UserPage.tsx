@@ -5,7 +5,6 @@ import queryString from 'query-string';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import UserDetailsList from 'src/components/UserDetailsList';
-import 'react-tabs/style/react-tabs.css';
 import { addUserDetailAction, getUserAction } from 'src/action/action';
 import { Dispatch } from "redux";
 import { get as lGet } from 'lodash';
@@ -98,11 +97,11 @@ const TabsStyled = styled(Tabs)`
 function UserPage() {
   const dispatch: Dispatch<any> = useDispatch();
   const location = useLocation();
-  const mapUserNameToUserStore = useSelector((state: any) => state.userDetails.mapUserNameToUser, shallowEqual);
-  const userStore = useSelector((state: any) => state.users.users, shallowEqual);
-  const likedUserStore = useSelector((state: any) => state.likes.users, shallowEqual);
+  const mapUserNameToUserStore = useSelector((state: { userDetails: { mapUserNameToUser: {}}}) => state.userDetails.mapUserNameToUser, shallowEqual);
+  const userStore = useSelector((state: {users : { users: (IUser)[]}}) => state.users.users, shallowEqual);
+  const likedUserStore = useSelector((state: { likes: {users: (IUser)[]}}) => state.likes.users, shallowEqual);
 
-  const [ user, setUser ] = useState<any>({})
+  const [ user, setUser ] = useState<IUser | null>(null)
   const [ username, setUsername ] = useState('')
 
   useEffect(() => {
@@ -111,7 +110,7 @@ function UserPage() {
     if (!parsedQuery?.username) return;
     let userFromDetailStore = mapUserNameToUserStore[String(parsedQuery.username).toLowerCase()]
     if (userFromDetailStore) {
-      setStates({user: userFromDetailStore, username: user.login})
+      setStates({user: userFromDetailStore, username: String(parsedQuery.username).toLowerCase()})
       return;
     }
     let userFromLikedStore = likedUserStore.find(user => user.login === parsedQuery.username)
@@ -124,7 +123,7 @@ function UserPage() {
       setStates({user: userFromSearchStore, username: userFromSearchStore.login})
       return;
     }
-    setStates({user: {}, username: parsedQuery.username})
+    setStates({user: null, username: parsedQuery.username})
     dispatch(getUserAction({username: String(parsedQuery.username)}));
   }, [dispatch, location])
 

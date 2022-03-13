@@ -29,7 +29,7 @@ function LikeButton ({
   likeDisable : boolean
 }) {
    const dispatch: Dispatch<any> = useDispatch();
-   const likedUsersState: IUsers[] = useSelector((state: any) => state.likes.users, shallowEqual);
+   const likedUsersState: IUser[] = useSelector((state: {likes : { users: IUser[] }}) => state.likes.users, shallowEqual);
 
 
    const [isLike, setIsLike] = useState(false)
