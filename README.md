@@ -66,7 +66,12 @@ https://huyluong-github-user-search.herokuapp.com/
 10. Fix bugs
 11. Handle deploy to Heroku
 
-##TODO:
+## TODO:
 - [ ] Pagination in `UserDetailPage`
-- [ ] Add loading in `UserDetailPage`
-- [ ] Caching search user result base on searchTerm and page
+- [ ] Add loading in `UserDetailPage` when load repo list / followers list / following list
+- [ ] Caching search user result in Redux base on searchTerm and page as a key eg: Redux format: `users: { [searchTerm]: {[page1]: search result}}`
+- [ ] Adjust size of UserCard with `max-height`
+- [ ] Loading followers and following user's info in UserDetail Page
+- [ ] Enable like user in follower and following user in UserDetail Page
+- [ ] Allow unlike user in Liked page
+- [ ] Remains old search result when coming back from UserDetailPage
