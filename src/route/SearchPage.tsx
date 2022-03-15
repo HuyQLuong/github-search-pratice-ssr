@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import { useNavigate } from "react-router-dom";
 import queryString from 'query-string';
 import { setSearchTermAction, setSearchPageAction, getUsersAction } from 'src/action/action';
-import { Dispatch } from "redux";
 import { useLocation } from 'react-router-dom';
 
 const PageWrapper = styled.div`
@@ -19,7 +18,7 @@ function SearchPage() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
 
   const usersListStore = useSelector((state: { users: {users: (IUser)[]}}) => state.users.users, shallowEqual);
   const totalUserStore = useSelector((state: { users: { total: number }}) => state.users.total, shallowEqual);
@@ -65,7 +64,6 @@ function SearchPage() {
 
   useEffect(() => {
     if (!searchTerm || !currentPage) return;
-    debugger;
     const url = `${searchTerm ? `?query=${searchTerm}`: ''}${searchTerm && currentPage ? `&&page=${currentPage}` : ''}`
     if (window.location.search !== url){
       navigate(url)

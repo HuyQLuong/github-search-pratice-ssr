@@ -6,7 +6,6 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import UserDetailsList from 'src/components/UserDetailsList';
 import { addUserDetailAction, getUserAction } from 'src/action/action';
-import { Dispatch } from "redux";
 import { get as lGet } from 'lodash';
 import { useLocation } from 'react-router-dom';
 
@@ -95,7 +94,7 @@ const TabsStyled = styled(Tabs)`
 `
 
 function UserPage() {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch = useDispatch();
   const location = useLocation();
   const mapUserNameToUserStore = useSelector((state: { userDetails: { mapUserNameToUser: {}}}) => state.userDetails.mapUserNameToUser, shallowEqual);
   const userStore = useSelector((state: {users : { users: (IUser)[]}}) => state.users.users, shallowEqual);

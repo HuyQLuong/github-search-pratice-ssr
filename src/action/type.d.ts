@@ -1,8 +1,3 @@
-interface IUser {
-    avatar_url: string,
-    login: string
-  }
-  
   type UsersState = {
     users: IUser[]
     total: number

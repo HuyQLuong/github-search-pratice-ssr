@@ -115,7 +115,7 @@ export const getUsersAction = ({query, page} :{query: string, page: number}) => 
 };
 
 export const getUserAction = ({username} :{username: string}) => async (dispatch: UserDispatchType) => {
-    const response: any = await getUserInfoService({username: username});
+    const response: IUser = await getUserInfoService({username: username});
     if (response) {
         dispatch(addUserDetail({user: response}))
     }

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import UserCard from 'src/components/UserCard';
 import RepoCard from 'src/components/RepoCard';
 import styled from 'styled-components';
+import { get as lGet } from 'lodash';
 
 const PageWrapper = styled.div`
   display: flex;
@@ -16,28 +17,33 @@ function UserDetailsList ({
     user,
     type,
 } : {
-    user: any,
+    user: IUser,
     type: string
 }) {
+  const repoList = useMemo(() => lGet(user, 'repoList', null),[user])
+  const followerList = useMemo(() => lGet(user, 'followingList', null),[user])
+  const followingList = useMemo(() => lGet(user, 'followingList', null),[user])
+
+
   return (
     <PageWrapper>
 
           {
-              type==='repo' && user.repoList && !!user.repoList.length && user.repoList.map((repo) => {
+              type==='repo' && repoList && !!repoList.length && repoList.map((repo) => {
                   return (
                       <RepoCard repo={repo} key={repo.name}></RepoCard>
                   )
               })
           }
           {
-            type==='follower' && user.followerList && !!user.followerList.length && user.followerList.map((follower) => {
+            type==='follower' && followingList && !!followerList.length && followerList.map((follower: IUser) => {
               return (
                 <UserCard key={follower.login} item={follower} likeDisable={true}></UserCard>
               )
             })
           }
           {
-            type==='following' && user.followingList && !!user.followingList.length && user.followingList.map((follower) => {
+            type==='following' && followingList && !!followingList.length && followingList.map((follower) => {
               return (
                 <UserCard key={follower.login} item={follower} likeDisable={true}></UserCard>
               )

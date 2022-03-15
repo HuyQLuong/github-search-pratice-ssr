@@ -56,7 +56,7 @@ function UserCard ({
   item,
   likeDisable,
 } : {
-  item: { login: string, avatar_url: string }
+  item: IUser
   likeDisable: boolean
 }) {
 

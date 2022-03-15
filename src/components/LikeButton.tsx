@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Heart as HeartIcon } from '@styled-icons/boxicons-solid/Heart';
 import styled from 'styled-components';
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Dispatch } from "redux";
 import { likeUserAction, unLikeUserAction } from 'src/action/action';
 
 const HeartIconStyled = styled(HeartIcon)`
@@ -25,10 +24,10 @@ function LikeButton ({
   item,
   likeDisable
 } : {
-  item: { login: string, avatar_url: string }
+  item: IUser
   likeDisable : boolean
 }) {
-   const dispatch: Dispatch<any> = useDispatch();
+   const dispatch = useDispatch();
    const likedUsersState: IUser[] = useSelector((state: {likes : { users: IUser[] }}) => state.likes.users, shallowEqual);
 
 

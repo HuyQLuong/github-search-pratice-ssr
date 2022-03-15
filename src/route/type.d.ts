@@ -10,9 +10,13 @@ interface Repo {
   forks: number,
   watchers: number,
 }
+interface IUser {
+  avatar_url: string,
+  login: string
+}
 
-interface UserDetail {
+interface IUserDetail extends IUser {
+  followerList: (IUser)[],
+  followingList: (IUser)[],
   repoList: (Repo)[],
-  followerList: ({})[],
-  followingList: ({})[]
 }
