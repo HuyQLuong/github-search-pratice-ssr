@@ -14,18 +14,19 @@
     "strict": true,
     "moduleResolution": "node",
     "jsx": "react",
-    "baseUrl": "./",
+    "noImplicitAny": false,
+    "baseUrl": ".",
     "paths": {
-      "client/*": [
-        "./client/*"
+      "src":[
+        "src/*"
       ],
-      "server/*": [
-        "./server/*"
-      ]
+      "server": [
+        "server/*"
+      ],
     },
   },
   "include": [
-    "client",
-    "server",
+    "src",
+    "server"
   ],
 }
