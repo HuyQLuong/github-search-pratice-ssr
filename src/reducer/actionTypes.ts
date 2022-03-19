@@ -1,0 +1,10 @@
+export const GET_USER = "GET_USER"
+export const ADD_USERS = "ADD_USERS"
+export const ADD_LIKED_USER = "ADD_LIKED_USER"
+export const UNLIKED_USER = "UNLIKED_USER"
+export const SET_SEARCH_TERM = "SET_SEARCH_TERM"
+export const SET_SEARCH_PAGE = "SET_SEARCH_PAGE"
+export const SET_LOADING_PAGE = "SET_LOADING_PAGE"
+export const ADD_USER_DETAILS = "ADD_USER_DETAILS"
+
+
